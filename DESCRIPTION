@@ -10,5 +10,5 @@ Description: This package contains funtions used to create statistical tables an
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.6.0),ggplot2,withr,stringr,dplyr
+Depends: R (>= 3.6.2),ggplot2,withr,stringr,dplyr,reshape2
 RoxygenNote: 7.0.0
