@@ -26,6 +26,7 @@ This program was tested and developed on the macOS Catalina 10.15 system. The fo
 * withr 
 * stringr
 * dplyr
+* reshape2
 
 RStudio Version 1.2.5019 is optional.
 
