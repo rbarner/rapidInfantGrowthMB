@@ -1,16 +1,16 @@
 \name{plot_taxa_growthMeasures_association}
 \alias{plot_taxa_growthMeasures_association}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
-%%  ~~function to do ... ~~
+Plot individual taxa against growth measure.
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Create scatter plots of taxa and growth measure with a regression line.
 }
 \usage{
 plot_taxa_growthMeasures_association(taxaOfInterest = "k__Bacteria| p__Proteobacteria| c__Gammaproteobacteria| o__Pseudomonadales",taxaOfInterestTitle = "Logged Abundance of Pseudomonadales", measureOfInterest = "inf_weight_kg_12m", measureOfInterestTitle = "12-Month Weight (kg)")
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{taxaOfInterest}{
   Name of taxa that is the independent variable. Default is "k__Bacteria| p__Proteobacteria| c__Gammaproteobacteria| o__Pseudomonadales".
