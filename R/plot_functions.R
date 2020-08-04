@@ -5,7 +5,8 @@ plot_phylum_relativeAbundances_barplot <- function( )
   mergeData <- rapidGrowthAssignments[,names(rapidGrowthAssignments) %in% c("dyad_id","rapidGrowth")]
   mergeData$dyad_id <- factor(as.character(with_options(c(scipen = 999), str_pad(mergeData$dyad_id, 4, pad = "0"))))
 
-  load("data/phylum_counts_infant_baseline.RData") #loads in "myT" which is a data frame containing phylum counts of infants at baseline
+  #load("data/phylum_counts_infant_baseline.RData") #loads in "myT" which is a data frame containing phylum counts of infants at baseline
+  myT <- phylum_counts_infant_baseline
   totalReads <- colSums(myT)
   totalReadsFiltered <- totalReads[totalReads>=10]
   myT_RA <- (myT/(rowSums(myT)))
