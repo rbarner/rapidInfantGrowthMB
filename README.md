@@ -21,7 +21,7 @@ Code used to create statistical tables and plots used in the manuscript "The Ear
 
 ## System Requirements
 This program was tested and developed on the macOS Catalina 10.15 system. The following packages in R are necessary for this package:
-* R (>= 3.6.0) 
+* R (>= 3.6.2) 
 * ggplot2
 * withr 
 * stringr
