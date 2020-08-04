@@ -25,6 +25,7 @@ This program was tested and developed on the macOS Catalina 10.15 system. The fo
 * ggplot2
 * withr 
 * stringr
+* dplyr
 
 RStudio Version 1.2.5019 is optional.
 
