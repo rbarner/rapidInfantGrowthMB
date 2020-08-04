@@ -1,7 +1,7 @@
 plot_phylum_relativeAbundances_barplot <- function( )
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  rapidGrowthAssignments <- dataSet
+  #load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  rapidGrowthAssignments <- metaData
   mergeData <- rapidGrowthAssignments[,names(rapidGrowthAssignments) %in% c("dyad_id","rapidGrowth")]
   mergeData$dyad_id <- factor(as.character(with_options(c(scipen = 999), str_pad(mergeData$dyad_id, 4, pad = "0"))))
 
@@ -71,8 +71,8 @@ plot_phylum_relativeAbundances_barplot <- function( )
 
 plot_mds_coloredByRapidGrowth <- function()
 {
-  load("data/infant_1m_ordination_for_MDS_plots.RData") # load in "ordinationMeta" which has the ordinations from deicode for first 3 axes
-  load("data/infant_1m_eigenvalues_for_ordination_for_MDS_plots.RData") # load in "eigen1m" which has the eigenvalues for the deicode ordinations
+  #load("data/infant_1m_ordination_for_MDS_plots.RData") # load in "ordinationMeta" which has the ordinations from deicode for first 3 axes
+  #load("data/infant_1m_eigenvalues_for_ordination_for_MDS_plots.RData") # load in "eigen1m" which has the eigenvalues for the deicode ordinations
 
   comp1<-as.character(paste("Axis 1,"," ",(round(eigen1m$ProportionExplained[1],2))*100,"% variance explained",sep=""));
   comp2<-as.character(paste("Axis 2,"," ",(round(eigen1m$ProportionExplained[2],2))*100,"% variance explained",sep=""));
@@ -103,9 +103,9 @@ plot_mds_coloredByRapidGrowth <- function()
 
 plot_alphaDiversity_rapidGrowth_ttest_boxplots <- function(variable = "shannonDiversity",variableName = "Shannon Diversity")
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity measures per sample
-  taxaMeta <- merge(dataSet,myT5,by="dyad_id")
+  #load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  #load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity measures per sample
+  taxaMeta <- merge(metaData,alphaDiversity_infants_1month,by="dyad_id")
 
   modelForm=as.formula(paste("thisDiversityIndex","~rapidGrowth"));
 
@@ -145,7 +145,7 @@ plot_alphaDiversity_rapidGrowth_ttest_boxplots <- function(variable = "shannonDi
 
 plot_lefse_LDA_graph <- function()
 {
-  load("data/significantLEFSEtaxa.RData") # load in results of lefse analysis for significant taxa as "lefseData"
+  #load("data/significantLEFSEtaxa.RData") # load in results of lefse analysis for significant taxa as "lefseData"
   taxaShort <- strsplit(as.character(lefseData$Taxa),"\\.")
   taxaToBeExamined <- lefseData$Taxa
   taxaNames <- character(0)
@@ -185,10 +185,10 @@ plot_lefse_LDA_graph <- function()
 
 plot_taxa_growthMeasures_association <- function(taxaOfInterest = "k__Bacteria| p__Proteobacteria| c__Gammaproteobacteria| o__Pseudomonadales",taxaOfInterestTitle = "Logged Abundance of Pseudomonadales", measureOfInterest = "inf_weight_kg_12m", measureOfInterestTitle = "12-Month Weight (kg)")
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
+  #load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  #load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
 
-  taxaMeta <- merge(dataSet,myT,by.x="dyad_id",by.y="row.names")
+  taxaMeta <- merge(metaData,lefseTaxaCounts,by.x="dyad_id",by.y="row.names")
 
   thisDataInstance <- taxaMeta[,names(taxaMeta) %in% c(taxaOfInterest,"k__Bacteria","baby_birthlength_cm","baby_birthweight_kg",measureOfInterest,"dyad_id")]
   thisDataInstance$dyad_id <- factor(thisDataInstance$dyad_id)

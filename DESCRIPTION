@@ -1,11 +1,14 @@
 Package: rapidInfantGrowthMB
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Determines Association Between Infant Microbiome At 1 Month And Rapid Growth Status From Birth To 12 months
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Date: 2020-08-04
+Author: Roshonda Barner Jones
+Maintainer: Roshonda Barner Jones <rosjones@chla.usc.edu>
+Description: This package contains funtions used to create statistical tables and plots used in the manuscript "The Early Gut Microbiota is Associated with Infant Growth in Hispanics from Southern California". 
+    The aim of the research is to determine whether the gut microbiota at 1 month of age explains rapid growth status at 12 months of age.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.5.0),ggplot2,withr
+RoxygenNote: 7.0.0

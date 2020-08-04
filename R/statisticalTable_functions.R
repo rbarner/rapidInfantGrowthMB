@@ -1,7 +1,7 @@
 summarize_1MonthCharacteristics_byRapidGrowth <- function()
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  MM <- dataSet
+  #load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  MM <- metaData
   MM$mode_of_delivery_cat <- factor(ifelse(MM$mode_of_delivery %in% 1, "Vaginal","C-Section"),levels = c("Vaginal","C-Section"))
   MM$baby_gender_cat <- factor(ifelse(MM$baby_gender %in% 1, "Female","Male"))
   MM$Milk_BL_Cat <- factor(ifelse(MM$breastmilk_per_day_baseline < 8, "Low","High"))
@@ -82,9 +82,9 @@ summarize_1MonthCharacteristics_byRapidGrowth <- function()
 
 compute_OR_RapidGrowth_byAlphaDiversity <- function()
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
-  taxaMeta <- merge(dataSet,myT5,by="dyad_id")
+  #load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  #load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
+  taxaMeta <- merge(metaData,alphaDiversity_infants_1month,by="dyad_id")
 
   diversityIndices <- c("shannonDiversity","richness", "evenness","numSeqPerSample")
 
@@ -130,9 +130,9 @@ compute_OR_RapidGrowth_byAlphaDiversity <- function()
 
 compute_associations_alphaDiversity_growthMeasures <- function()
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
-  taxaMeta <- merge(dataSet,myT5,by="dyad_id")
+  #load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  #load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
+  taxaMeta <- merge(metaData,alphaDiversity_infants_1month,by="dyad_id")
 
   diversityIndices <- c("shannonDiversity","richness", "evenness","numSeqPerSample")
 
@@ -179,10 +179,10 @@ compute_associations_alphaDiversity_growthMeasures <- function()
 
 compute_OR_RapidGrowth_bylefseTaxa <- function()
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
+  # load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  # load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
+  taxaMeta <- merge(metaData,lefseTaxaCounts,by.x="dyad_id",by.y="row.names")
 
-  taxaMeta <- merge(dataSet,myT,by.x="dyad_id",by.y="row.names")
   taxaOfInterest <- c("k__Bacteria| p__Firmicutes| c__Bacilli| o__Lactobacillales| f__Enterococcaceae",
                       "k__Bacteria| p__Firmicutes| c__Clostridia| o__Clostridiales| f__Lachnospiraceae| g__Blautia",
                       "k__Bacteria| p__Firmicutes| c__Clostridia| o__Clostridiales| f__Ruminococcaceae| g__Unclassified",
@@ -238,10 +238,10 @@ compute_OR_RapidGrowth_bylefseTaxa <- function()
 
 compute_associations_lefseTaxa_growthMeasures <- function()
 {
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
+  # load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  # load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
+  taxaMeta <- merge(metaData,lefseTaxaCounts,by.x="dyad_id",by.y="row.names")
 
-  taxaMeta <- merge(dataSet,myT,by.x="dyad_id",by.y="row.names")
   taxaOfInterest <- c("k__Bacteria| p__Firmicutes| c__Bacilli| o__Lactobacillales| f__Enterococcaceae",
                       "k__Bacteria| p__Firmicutes| c__Clostridia| o__Clostridiales| f__Lachnospiraceae| g__Blautia",
                       "k__Bacteria| p__Firmicutes| c__Clostridia| o__Clostridiales| f__Ruminococcaceae| g__Unclassified",
