@@ -24,6 +24,7 @@ plot_alphaDiversity_rapidGrowth_ttest_boxplots(variable = "shannonDiversity",var
 }
 \value{
 None
+}
 \references{
 
 }
