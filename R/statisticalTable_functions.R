@@ -1,4 +1,4 @@
-compute_1MonthCharacteristics_byRapidGrowth <- function()
+summarize_1MonthCharacteristics_byRapidGrowth <- function()
 {
   load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
   MM <- dataSet
@@ -80,7 +80,7 @@ compute_1MonthCharacteristics_byRapidGrowth <- function()
   return(allOutcomes)
 }
 
-compute_alphaDiversity_byRapidGrowth <- function()
+compute_OR_RapidGrowth_byAlphaDiversity <- function()
 {
   load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
   load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
@@ -128,7 +128,7 @@ compute_alphaDiversity_byRapidGrowth <- function()
   return(allOutcomes)
 }
 
-compute_alphaDiversity_byGrowthMeasures <- function()
+compute_associations_alphaDiversity_growthMeasures <- function()
 {
   load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
   load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
@@ -139,7 +139,7 @@ compute_alphaDiversity_byGrowthMeasures <- function()
   growthMeasuresList<-c("diffGrowth_zwei","diffGrowth_zbmi","diffGrowth_zwfl",
                         "zwei_12m","zbmi_12m","zwfl_12m","inf_weight_kg_12m","inf_length_cm_12m",
                         "skinf_midthigh_mm_12m","skinf_tricep_mm_12m","skinf_supra_mm_12m","skinf_subscap_mm_12m")
-  
+
   outcomesNamesList <- character(0);
   allOutcomes <- diversityIndices;
   for(variableOfInterest in growthMeasuresList)
@@ -177,7 +177,7 @@ compute_alphaDiversity_byGrowthMeasures <- function()
 }
 
 
-compute_lefseTaxa_byRapidGrowth <- function()
+compute_OR_RapidGrowth_bylefseTaxa <- function()
 {
   load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
   load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
@@ -236,55 +236,7 @@ compute_lefseTaxa_byRapidGrowth <- function()
   return(allOutcomes)
 }
 
-compute_alphaDiversity_byGrowthMeasures <- function()
-{
-  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
-  load("data/alphaDiversity_infants_1month.RData") #loads in "myT5" which is a data frame with alpha diversity indices per sample
-  taxaMeta <- merge(dataSet,myT5,by="dyad_id")
-  
-  diversityIndices <- c("shannonDiversity","richness", "evenness","numSeqPerSample")
-  
-  growthMeasuresList<-c("diffGrowth_zwei","diffGrowth_zbmi","diffGrowth_zwfl",
-                        "zwei_12m","zbmi_12m","zwfl_12m","inf_weight_kg_12m","inf_length_cm_12m",
-                        "skinf_midthigh_mm_12m","skinf_tricep_mm_12m","skinf_supra_mm_12m","skinf_subscap_mm_12m")
-  
-  outcomesNamesList <- character(0);
-  allOutcomes <- diversityIndices;
-  for(variableOfInterest in growthMeasuresList)
-  {
-    adjustedLMList <- character(0);
-    pValLMList <- numeric(0);
-    
-    for(diversityIndex in diversityIndices)
-    {
-      #allOutcomes[[length(allOutcomes)+1]] <- diversityIndex;
-      modelFormLM=as.formula(paste(variableOfInterest,"~",diversityIndex, "+baby_birthlength_cm+baby_birthweight_kg" ));
-      
-      ### Linear Regression to test if diversity explains 12 month growth measures ####
-      modelInfoLM <- lm(modelFormLM, data = taxaMeta)
-      coefs <- coef(modelInfoLM)
-      ci_est <- confint(modelInfoLM, diversityIndex, level=0.95)
-      
-      lower_ci_est <- format(ci_est[1],digits = 3)
-      upper_ci_est <- format(ci_est[2],digits = 3)
-      thisBeta <- format(coefs[diversityIndex],digits=3);
-      adjustedLM <- paste(thisBeta," (",lower_ci_est,", ",upper_ci_est, ")",sep="")
-      adjustedLMList[[length(adjustedLMList)+1]] <- adjustedLM;
-      
-      pValLM <- format.pval(coef(summary(modelInfoLM))[diversityIndex,4],digits=3);
-      pValLMList[[length(pValLMList)+1]] <- pValLM
-    }
-    adjPvals <- p.adjust(pValLMList,method = "BH")
-    allOutcomes <- cbind(allOutcomes,adjustedLMList, pValLMList,adjPvals);
-    outcomesNamesList <- cbind(outcomesNamesList,paste(variableOfInterest,"beta_(CI)",sep="_"),paste(variableOfInterest,"pval",sep="_"),paste(variableOfInterest,"adj_pval",sep="_"))
-  }
-  allOutcomes <- data.frame(allOutcomes)
-  names(allOutcomes) <- c("DiversityMeasure",outcomesNamesList);
-  
-  return(allOutcomes)
-}
-
-compute_lefseTaxa_byGrowthMeasures <- function()
+compute_associations_lefseTaxa_growthMeasures <- function()
 {
   load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
   load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
