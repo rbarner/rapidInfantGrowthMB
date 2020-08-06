@@ -44,18 +44,18 @@ summarize_1MonthCharacteristics_byRapidGrowth <- function()
     }
     else
     {
-      meanAll<- format(mean(MM[,names(MM) %in% vari]),digits=3)
-      sdAll <- format(sd(MM[,names(MM) %in% vari]),digits=3)
+      meanAll<- format(mean(MM[,names(MM) %in% vari],na.rm = TRUE),digits=3)
+      sdAll <- format(sd(MM[,names(MM) %in% vari],na.rm = TRUE),digits=3)
       thisAllColumn <- paste(meanAll, "±", sdAll)
       overallColumn[[length(overallColumn)+1]] <- thisAllColumn;
 
-      meanRapid <- format(mean(MM[MM$rapidGrowth %in% "Rapid Growth",names(MM) %in% vari]),digits=3)
-      sdRapid <- format(sd(MM[MM$rapidGrowth %in% "Rapid Growth",names(MM) %in% vari]),digits=3)
+      meanRapid <- format(mean(MM[MM$rapidGrowth %in% "Rapid Growth",names(MM) %in% vari],na.rm = TRUE),digits=3)
+      sdRapid <- format(sd(MM[MM$rapidGrowth %in% "Rapid Growth",names(MM) %in% vari],na.rm = TRUE),digits=3)
       thisRapidColumn <- paste(meanRapid, "±", sdRapid)
       rapidGrowthColumn[[length(rapidGrowthColumn)+1]] <- thisRapidColumn;
 
-      meanNonRapid <- format(mean(MM[MM$rapidGrowth %in% "Non-rapid Growth",names(MM) %in% vari]),digits=3)
-      sdNonRapid <- format(sd(MM[MM$rapidGrowth %in% "Non-rapid Growth",names(MM) %in% vari]),digits=3)
+      meanNonRapid <- format(mean(MM[MM$rapidGrowth %in% "Non-rapid Growth",names(MM) %in% vari],na.rm = TRUE),digits=3)
+      sdNonRapid <- format(sd(MM[MM$rapidGrowth %in% "Non-rapid Growth",names(MM) %in% vari],na.rm = TRUE),digits=3)
       thisNonRapidColumn <- paste(meanNonRapid, "±", sdNonRapid)
       nonRapidGrowthColumn[[length(nonRapidGrowthColumn)+1]] <- thisNonRapidColumn;
     }
