@@ -11,7 +11,7 @@ summarize_1MonthCharacteristics_byRapidGrowth <- function()
                    "age_in_days_baseline", "baby_gender_cat",
                    	"baby_birthweight_kg","baby_birthlength_cm",
                    "inf_weight_kg_baseline","inf_length_cm_baseline",
-                   "zwfl_baseline","zbmi_baseline", "Milk_BL_Cat")
+                   "zwfl_baseline","zbmi_baseline", "Milk_BL_Cat","age_solid_foods_introduced")
 
   exposureNamesList <- character(0); allOutcomes <- character(0);
   overallColumn <- character(0); rapidGrowthColumn <- character(0); nonRapidGrowthColumn <- character(0);
