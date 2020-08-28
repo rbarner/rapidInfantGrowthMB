@@ -13,7 +13,7 @@ print_OR_RapidGrowth_byAlphaDiversity <- function(filepath)
 print_associations_alphaDiversity_growthMeasures <- function(filepath)
 {
   thisTable <- compute_associations_alphaDiversity_growthMeasures()
-  write.table(thisTable,filepath,quote=FALSE,sep="\t",append=FALSE,col.names = TRUE,row.names=FALSE)
+  write.table(t(thisTable),filepath,quote=FALSE,sep="\t",append=FALSE,col.names = FALSE,row.names=TRUE)
 }
 
 print_OR_RapidGrowth_bylefseTaxa <- function(filepath)
