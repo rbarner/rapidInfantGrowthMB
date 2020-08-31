@@ -82,4 +82,25 @@ print_intercept_slope_taxa_growthMeasures_association <- function(taxaOfInterest
 
 }
 
+print_plotData_taxa_growthMeasures_association <- function(taxaOfInterest = "k__Bacteria| p__Proteobacteria| c__Gammaproteobacteria| o__Pseudomonadales", measureOfInterest = "inf_weight_kg_12m",filepath)
+{
+  load("data/metaData_generalCharacteristics.RData") #loads in "dataSet" which is a data frame containing metadata
+  load("data/lefse_allData_rapidGrowth_updated_notLogged.RData") #loads in "myT" which is a data frame with lefse_formatted taxa counts per sample
+
+  taxaMeta <- merge(metaData,lefseTaxaCounts,by.x="dyad_id",by.y="row.names")
+
+  thisDataInstance <- taxaMeta[,names(taxaMeta) %in% c(taxaOfInterest,"k__Bacteria","baby_birthlength_cm","baby_birthweight_kg","gestational_age_category",measureOfInterest,"dyad_id")]
+  thisDataInstance$dyad_id <- factor(thisDataInstance$dyad_id)
+  thisDataInstance$gestational_age_category <- factor(thisDataInstance$gestational_age_category,levels = c("On Time","Late","Early"))
+
+  names(thisDataInstance)[ names(thisDataInstance) %in% measureOfInterest] <- "thisVariable"
+  names(thisDataInstance)[ names(thisDataInstance) %in% taxaOfInterest] <- "thisTaxa"
+
+  thisDataInstance$taxaRelAbundance <- as.numeric(as.character(thisDataInstance$thisTaxa))/as.numeric(as.character(thisDataInstance$k__Bacteria))
+  thisDataInstance$logTaxaRelAbundance <- log10(((as.numeric(as.character(thisDataInstance$thisTaxa))/as.numeric(as.character(thisDataInstance$k__Bacteria)))*mean(as.numeric(as.character(thisDataInstance$k__Bacteria))))+1)
+
+  names(thisDataInstance)[ names(thisDataInstance) %in% "thisVariable"] <- measureOfInterest
+
+  write.table(thisDataInstance[,c("dyad_id",measureOfInterest,"logTaxaRelAbundance")],filepath,quote=FALSE, sep="\t",append=FALSE, row.names=FALSE, col.names=TRUE)
+}
 

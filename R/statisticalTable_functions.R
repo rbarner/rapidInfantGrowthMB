@@ -6,7 +6,7 @@ summarize_1MonthCharacteristics_byRapidGrowth <- function()
   MM$mode_of_delivery_cat <- factor(ifelse(MM$mode_of_delivery %in% 1, "Vaginal","C-Section"),levels = c("Vaginal","C-Section"))
   MM$baby_gender_cat <- factor(ifelse(MM$baby_gender %in% 1, "Female","Male"))
   MM$Milk_BL_Cat <- factor(ifelse(MM$breastmilk_per_day_baseline < 8, "Low","High"))
-  MM$Form_BL_Cat <- factor(ifelse(MM$formula_per_day_baseline < 1, "Low","High"))
+  MM$Form_BL_Cat <- factor(ifelse(MM$formula_per_day_baseline < 1, "No","Yes"), levels=c("No","Yes"))
   MM$gestational_age_category <- factor(MM$gestational_age_category,levels = c("On Time","Late","Early"))
 
 
@@ -164,10 +164,10 @@ compute_OR_RapidGrowth_byAlphaDiversity <- function()
     ### T-test to test for differences in diversity by rapid growth status ####
     modelInfoTtest <- t.test(modelFormTtest, data = taxaMeta)
 
-    thisTstatistic <- format(modelInfoTtest$statistic,digits = 2)
+    thisTstatistic <- format(modelInfoTtest$statistic,digits = 3)
     tStatList[[length(tStatList)+1]] <- thisTstatistic;
 
-    pValTtest <- format.pval(modelInfoTtest$p.value,digits=2);
+    pValTtest <- format.pval(modelInfoTtest$p.value,digits=3);
     pValTtestList[[length(pValTtestList)+1]] <- pValTtest
 
     ### Logistic Regression to test if diversity explains rapid growth status ####
@@ -175,18 +175,19 @@ compute_OR_RapidGrowth_byAlphaDiversity <- function()
 
     coefs <- coef(modelInfoOR)
     oddsRatio <- exp(cbind(OR = coef(modelInfoOR), confint(modelInfoOR)))
-    thisOR <- format(oddsRatio[2,1],digits = 2)
-    thisORUpper <- format(oddsRatio[2,3],digits = 2)
-    thisORLower <- format(oddsRatio[2,2],digits = 2)
+    thisOR <- format(oddsRatio[2,1],digits = 4)
+    thisORUpper <- format(oddsRatio[2,3],digits = 4)
+    thisORLower <- format(oddsRatio[2,2],digits = 4)
     adjustedOR <- paste(thisOR," (",thisORLower,", ",thisORUpper, ")",sep="")
     adjustedORList[[length(adjustedORList)+1]] <- adjustedOR;
 
-    pValOR <- format.pval(coef(summary(modelInfoOR))[2,4],digits=2);
+    pValOR <- format.pval(coef(summary(modelInfoOR))[2,4],digits=3);
     pValORList[[length(pValORList)+1]] <- pValOR
   }
-  adjTtestList <- format.pval(p.adjust(pValTtestList,method = "BH"),digits = 1);
+  adjTtestList <- format.pval(p.adjust(pValTtestList,method = "BH"),digits = 3);
   adjORpValList <- p.adjust(pValORList,method = "BH");
-  allOutcomes <- cbind(allOutcomes,tStatList,pValTtestList,adjustedORList,pValORList);
+  #allOutcomes <- cbind(allOutcomes,tStatList,pValTtestList,adjustedORList,pValORList);
+  allOutcomes <- cbind(allOutcomes,adjustedORList,pValORList);
   allOutcomes <- data.frame(allOutcomes)
   return(allOutcomes)
 }
@@ -221,16 +222,16 @@ compute_associations_alphaDiversity_growthMeasures <- function()
       coefs <- coef(modelInfoLM)
       ci_est <- confint(modelInfoLM, diversityIndex, level=0.95)
 
-      lower_ci_est <- format(ci_est[1],digits = 2)
-      upper_ci_est <- format(ci_est[2],digits = 2)
-      thisBeta <- format(coefs[diversityIndex],digits=2);
+      lower_ci_est <- format(ci_est[1],digits = 3)
+      upper_ci_est <- format(ci_est[2],digits = 3)
+      thisBeta <- format(coefs[diversityIndex],digits=3);
       adjustedLM <- paste(thisBeta," (",lower_ci_est,", ",upper_ci_est, ")",sep="")
       adjustedLMList[[length(adjustedLMList)+1]] <- adjustedLM;
 
-      pValLM <- format.pval(coef(summary(modelInfoLM))[diversityIndex,4],digits=1);
+      pValLM <- format.pval(coef(summary(modelInfoLM))[diversityIndex,4],digits=2);
       pValLMList[[length(pValLMList)+1]] <- pValLM
     }
-    adjPvals <- format.pval(p.adjust(pValLMList,method = "BH"),digits=1)
+    adjPvals <- format.pval(p.adjust(pValLMList,method = "BH"),digits=2)
     allOutcomes <- cbind(allOutcomes,adjustedLMList, pValLMList);
     outcomesNamesList <- cbind(outcomesNamesList,paste(variableOfInterest,"beta_(CI)",sep="_"),paste(variableOfInterest,"pval",sep="_"))
   }
@@ -345,16 +346,16 @@ compute_associations_lefseTaxa_growthMeasures <- function()
       coefs <- coef(modelInfoLM)
       ci_est <- confint(modelInfoLM, "logTaxaRelAbundance", level=0.95)
 
-      lower_ci_est <- format(ci_est[1],digits = 2)
-      upper_ci_est <- format(ci_est[2],digits = 2)
-      thisBeta <- format(coefs["logTaxaRelAbundance"],digits=2);
+      lower_ci_est <- format(ci_est[1],digits = 3)
+      upper_ci_est <- format(ci_est[2],digits = 3)
+      thisBeta <- format(coefs["logTaxaRelAbundance"],digits=3);
       adjustedLM <- paste(thisBeta," (",lower_ci_est,", ",upper_ci_est, ")",sep="")
       adjustedLMList[[length(adjustedLMList)+1]] <- adjustedLM;
 
       pValLM <- format.pval(coef(summary(modelInfoLM))["logTaxaRelAbundance",4],digits=2);
       pValLMList[[length(pValLMList)+1]] <- pValLM
     }
-    adjPvals <- format.pval(p.adjust(pValLMList,method = "BH"),digits = 1)
+    adjPvals <- format.pval(p.adjust(pValLMList,method = "BH"),digits = 2)
     allOutcomes <- cbind(allOutcomes,adjustedLMList, adjPvals);
     outcomesNamesList <- cbind(outcomesNamesList,paste(variableOfInterest,"beta_(CI)",sep="_"),paste(variableOfInterest,"adj_pval",sep="_"))
   }
