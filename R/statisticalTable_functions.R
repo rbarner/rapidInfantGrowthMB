@@ -79,24 +79,28 @@ summarize_1MonthCharacteristics_byRapidGrowth <- function()
     {
       if(vari %in% "gestational_age_category")
       {
-        modelForm=as.formula(paste("rapidGrowth","~ 0 +",vari  ));
+        #modelForm=as.formula(paste("rapidGrowth","~ 0 +",vari  ));
+        modelForm=as.formula(paste("rapidGrowth","~ ",vari  ));
         modelInfo <- glm(modelForm, data = MM,family="binomial")
 
         coefs <- coef(modelInfo)
         allOutcomes <- c(allOutcomes,vari)
-        allOutcomes <- c(allOutcomes,names(coefs)[1:length(coefs)]);
+        allOutcomes <- c(allOutcomes,"gestational_age_categoryOnTime")
+        allOutcomes <- c(allOutcomes,names(coefs)[2:length(coefs)]);
         oddsRatio <- exp(cbind(OR = coef(modelInfo), confint(modelInfo)))
-        thisOR <- format(oddsRatio[,1][1:length(coefs)],digits = 2)
-        thisORLower <- format(oddsRatio[,2][1:length(coefs)],digits = 2)
-        thisORUpper <- format(oddsRatio[,3][1:length(coefs)],digits = 2)
+        thisOR <- format(oddsRatio[,1][2:length(coefs)],digits = 2)
+        thisORLower <- format(oddsRatio[,2][2:length(coefs)],digits = 2)
+        thisORUpper <- format(oddsRatio[,3][2:length(coefs)],digits = 2)
         crudeOR <- paste(thisOR," (",thisORLower,", ",thisORUpper, ")",sep="")
         crudeORList <- c(crudeORList,"")
+        crudeORList <- c(crudeORList,"REF")
         crudeORList <- c(crudeORList,crudeOR)
 
         pVal <- format.pval(Anova(modelInfo)$`Pr(>Chisq)`,digits=2);
         pValORList[[length(pValORList)+1]] <- pVal
+        pValORList[[length(pValORList)+1]] <- "REF"
 
-        pValORList <- c(pValORList,format.pval(summary(modelInfo)$coefficients[1:length(coefs),4],digits =2))
+        pValORList <- c(pValORList,format.pval(summary(modelInfo)$coefficients[2:length(coefs),4],digits =2))
       }
       else
       {
